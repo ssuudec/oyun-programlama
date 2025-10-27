@@ -8,6 +8,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float fireRate = 0.25f; // Seri atış aralığı
 
     private float nextFire = 0f;
+    [SerializeField]
+    private int lives = 3;
+
 
     void Update()
     {
@@ -47,6 +50,16 @@ public class PlayerController : MonoBehaviour
         else
         {
             Debug.LogError("Laser Prefab atanmadı!");
+        }
+    }
+    
+    public void Damage()
+    {
+        lives--;
+
+        if(lives== 0)
+        {
+            Destroy(this.gameObject);
         }
     }
 }

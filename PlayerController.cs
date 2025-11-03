@@ -11,6 +11,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private int lives = 3;
 
+   
+
+    
+
 
     void Update()
     {
@@ -59,7 +63,21 @@ public class PlayerController : MonoBehaviour
 
         if(lives== 0)
         {
+             SpawnManager spawnManager_sc = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
+
+        if(spawnManager_sc!= null)
+            {
+                         spawnManager_sc.OnPlayerDeath();
+   
+            }
+            else
+            {
+                Debug.LogError("PlayerController:: Damage spawnManager_sc is NULL");
+            }
+            
             Destroy(this.gameObject);
+            
+
         }
     }
 }

@@ -12,7 +12,7 @@ public class Enemy : MonoBehaviour
 
         if (this.transform.position.y < -5.5f)
         {
-            
+
 
             this.transform.position = new Vector3(Random.Range(-9.5f, 9.5f), 7.4f, 0);
 
@@ -20,7 +20,7 @@ public class Enemy : MonoBehaviour
 
         }
     }
-    void OnTriggerEnter(Collider other)
+    void OnTriggerEnter2D(Collider2D other)
     {
         if (other.tag == "Player")
         {
@@ -36,4 +36,5 @@ public class Enemy : MonoBehaviour
             Destroy(this.gameObject);
         }
     }
+   
 }

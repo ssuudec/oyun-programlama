@@ -1,11 +1,15 @@
+using System.Collections;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
     public float speed = 10f;
 
-    [SerializeField] private GameObject laserPrefab; // Laser prefab
-    [SerializeField] private float fireRate = 0.25f; // Seri atış aralığı
+    [SerializeField]  GameObject laserPrefab; // Laser prefab
+    [SerializeField] float fireRate = 0.25f; // Seri atış aralığı
+
+    [SerializeField] bool isTripleShotActive = false;
+    [SerializeField]  GameObject tripleLaserPrefab; 
 
     private float nextFire = 0f;
     [SerializeField]
@@ -45,39 +49,48 @@ public class PlayerController : MonoBehaviour
 
     void FireLaser()
     {
-        if (laserPrefab != null)
+        if (!isTripleShotActive)
         {
-            // Player’ın üstünden çıkması için Y offset ekliyoruz
-            Vector3 spawnPosition = transform.position + new Vector3(0, 1f, 0);
-            Instantiate(laserPrefab, spawnPosition, Quaternion.identity);
+            Instantiate(laserPrefab, (this.transform.position + new Vector3(0, 1.05f, 0)), Quaternion.identity);
         }
         else
         {
-            Debug.LogError("Laser Prefab atanmadı!");
+            Instantiate(tripleLaserPrefab, (this.transform.position), Quaternion.identity);
         }
     }
-    
+
     public void Damage()
     {
         lives--;
 
-        if(lives== 0)
+        if (lives == 0)
         {
-             SpawnManager spawnManager_sc = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
+            SpawnManager spawnManager_sc = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
 
-        if(spawnManager_sc!= null)
+            if (spawnManager_sc != null)
             {
-                         spawnManager_sc.OnPlayerDeath();
-   
+                spawnManager_sc.OnPlayerDeath();
+
             }
             else
             {
                 Debug.LogError("PlayerController:: Damage spawnManager_sc is NULL");
             }
-            
+
             Destroy(this.gameObject);
-            
+
 
         }
+    }
+    public void TripleShotActive()
+    {
+        isTripleShotActive = true;
+        StartCoroutine(TripleShotCancelRoutine());
+    }
+
+    IEnumerator TripleShotCancelRoutine()
+    {
+        yield return new WaitForSeconds(5.0f);
+        isTripleShotActive = false;
     }
 }

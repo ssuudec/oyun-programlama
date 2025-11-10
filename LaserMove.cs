@@ -6,12 +6,15 @@ public class LaserMove : MonoBehaviour
 
     void Update()
     {
-        transform.Translate(Vector3.up * speed * Time.deltaTime);
+        this.transform.Translate(Vector3.up * speed * Time.deltaTime);
 
         // Ekrandan çıktığında yok et
-        if (transform.position.y > 7)
+        if (this.transform.position.y > 7)
         {
-            Destroy(gameObject);
+            if(this.transform.parent != null){
+                Destroy(transform.parent.gameObject);
+            }
+            Destroy(this.gameObject);
         }
     }
 }

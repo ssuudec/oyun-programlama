@@ -7,6 +7,12 @@ public class SpawnManager : MonoBehaviour
     [SerializeField]
     private GameObject enemyPrefab;
 
+
+
+    [SerializeField]
+    private GameObject tripleShotBonusPrefab;
+
+
     [SerializeField]
     private GameObject enemyContainer;
     
@@ -21,12 +27,13 @@ public class SpawnManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        StartCoroutine(SpawnRoutine());
+        StartCoroutine(SpawnEnemyRoutine());
+        StartCoroutine(SpawnBonusRoutine());
     }
 
 
 
-    IEnumerator SpawnRoutine()
+    IEnumerator SpawnEnemyRoutine()
     {
         while (stopSpawning == false)
         {
@@ -38,6 +45,21 @@ public class SpawnManager : MonoBehaviour
         }
 
     }
+
+    IEnumerator SpawnBonusRoutine()
+    {
+        while(stopSpawning == false)
+        {
+            Vector3 position = new Vector3(Random.Range(-9.18f, 9.18f), 7.7f, 0);
+            GameObject TripleShotBonus = Instantiate(tripleShotBonusPrefab, position, Quaternion.identity);
+            int WaitTime = Random.Range(3, 8);
+            Debug.Log("Üçlü atış bekleme süresi" + WaitTime);
+            yield return new WaitForSeconds(WaitTime);
+ 
+        }
+    }
+
+
 
     public void OnPlayerDeath()
     {

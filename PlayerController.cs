@@ -3,13 +3,26 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public float speed = 10f;
+        
+        public float speed = 10f;
+    
+       [SerializeField]
+       float speedMultiplier =2; 
 
     [SerializeField]  GameObject laserPrefab; // Laser prefab
     [SerializeField] float fireRate = 0.25f; // Seri atış aralığı
 
     [SerializeField] bool isTripleShotActive = false;
-    [SerializeField]  GameObject tripleLaserPrefab; 
+    [SerializeField] bool isSpeedBonusActive = false;
+    
+    [SerializeField] bool isShieldBonusActive = false;
+    [SerializeField]  GameObject shieldVisualizer; 
+
+    [SerializeField]  GameObject tripleLaserPrefab;
+
+
+
+
 
     private float nextFire = 0f;
     [SerializeField]
@@ -61,6 +74,16 @@ public class PlayerController : MonoBehaviour
 
     public void Damage()
     {
+        //koruma kalkanı aktifse canı azalmasın ama koruma kalkanı pasif duruma dönsün
+        if (isShieldBonusActive)
+        {
+            isShieldBonusActive = false;
+            shieldVisualizer.SetActive(false);
+            return;
+        }
+
+        //koruma kalkanı aktif değilse canı bir azaltır 
+
         lives--;
 
         if (lives == 0)
@@ -88,9 +111,37 @@ public class PlayerController : MonoBehaviour
         StartCoroutine(TripleShotCancelRoutine());
     }
 
+    public void SpeedBonusActive()
+    {
+        isSpeedBonusActive= true;
+        speed*= speedMultiplier;
+        StartCoroutine(SpeedBonusCancelRoutine());
+    }
+
+    public void ShieldBonusActive()
+    {
+        isShieldBonusActive = true;
+        shieldVisualizer.SetActive(true);
+        
+    }
+
+
+
     IEnumerator TripleShotCancelRoutine()
     {
         yield return new WaitForSeconds(5.0f);
         isTripleShotActive = false;
     }
+
+    IEnumerator SpeedBonusCancelRoutine()
+    {
+        yield return new WaitForSeconds(5.0f);
+        isSpeedBonusActive = false;
+        speed/= speedMultiplier;
+    }
+
+  
+    
+
 }
+

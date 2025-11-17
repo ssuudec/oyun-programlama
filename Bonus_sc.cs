@@ -5,11 +5,11 @@ public class Bonus_sc : MonoBehaviour
     [SerializeField]
 
     float speed = 3;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    
+    [SerializeField]
+    int bonusId;
+   
+  
 
     // Update is called once per frame
     void Update()
@@ -30,12 +30,39 @@ public class Bonus_sc : MonoBehaviour
     {
         if(other.tag == "Player")
         {
-            //üçlü atış bonusunu aktifleştir
+            
 
             PlayerController playerController = other.transform.GetComponent<PlayerController>();
             if(playerController != null)
             {
-                playerController.TripleShotActive();
+                switch (bonusId)
+                {
+                    //0 üçlü atış bonusunu temsil eder
+                    case 0:
+                          playerController.TripleShotActive();
+                          break;
+                    //1 hız bonusunu temsil eder      
+                    case 1:
+                          playerController.SpeedBonusActive();
+                          Debug.Log("hız bonusu aktif");
+                          break;
+                    //2 kalakn bonusunu temsil eder      
+                    case 2: 
+                          playerController.ShieldBonusActive();
+                          Debug.Log("kalakn bonusu aktif");
+                          break;   
+                    // yalnızca 3 tane tanımladık bunların dışı hata durumu
+                    default: 
+                          Debug.Log("hata");
+                          break;     
+                                
+                }
+                //TODO if ......(yakalanan triple shot bonusu ise)
+                
+                //TODO else if ....( yakalanan hız bonusu ise)
+                Debug.Log("hız bonusu aktif");
+                //TODO else if ...( yakalanan kalkan bonsuu ise)
+                Debug.Log("kalkan bonusu aktif");
             }
 
             // bonus nesnesini yok et 

@@ -9,8 +9,14 @@ public class SpawnManager : MonoBehaviour
 
 
 
-    [SerializeField]
-    private GameObject tripleShotBonusPrefab;
+   // [SerializeField]
+   // private GameObject tripleShotBonusPrefab;
+
+     [SerializeField]
+
+     GameObject[] bonusPrefabs;
+
+
 
 
     [SerializeField]
@@ -51,10 +57,16 @@ public class SpawnManager : MonoBehaviour
         while(stopSpawning == false)
         {
             Vector3 position = new Vector3(Random.Range(-9.18f, 9.18f), 7.7f, 0);
-            GameObject TripleShotBonus = Instantiate(tripleShotBonusPrefab, position, Quaternion.identity);
-            int WaitTime = Random.Range(3, 8);
+            
+            int WaitTime = Random.Range(5, 10);
             Debug.Log("Üçlü atış bekleme süresi" + WaitTime);
-            yield return new WaitForSeconds(WaitTime);
+            yield return new WaitForSeconds((float)WaitTime);
+
+            int randomBonus= Random.Range(0, 3);
+            GameObject TripleShotBonus = Instantiate(bonusPrefabs[randomBonus], position, Quaternion.identity);
+
+            
+
  
         }
     }

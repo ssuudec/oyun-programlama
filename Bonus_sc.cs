@@ -8,6 +8,11 @@ public class Bonus_sc : MonoBehaviour
     
     [SerializeField]
     int bonusId;
+
+    [SerializeField]
+    
+    AudioClip audioClip;
+    
    
   
 
@@ -35,6 +40,9 @@ public class Bonus_sc : MonoBehaviour
             PlayerController playerController = other.transform.GetComponent<PlayerController>();
             if(playerController != null)
             {
+                //bonus yakalandığında ses çal
+                AudioSource.PlayClipAtPoint(audioClip , this.transform.position , volume: 0.85f);
+
                 switch (bonusId)
                 {
                     //0 üçlü atış bonusunu temsil eder

@@ -13,21 +13,49 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float fireRate = 0.25f; // Seri atış aralığı
 
     [SerializeField] bool isTripleShotActive = false;
-    [SerializeField] bool isSpeedBonusActive = false;
+    //[SerializeField] bool isSpeedBonusActive = false;
     
     [SerializeField] bool isShieldBonusActive = false;
     [SerializeField]  GameObject shieldVisualizer; 
+    [SerializeField]  GameObject rightEngine, leftEngine;
 
     [SerializeField]  GameObject tripleLaserPrefab;
 
+    [SerializeField]  
+    AudioClip laserSoundClip;
+    AudioSource audioSource;
 
 
 
+    UiManager_sc uiManager_sc;
 
-    private float nextFire = 0f;
+    float nextFire = 0f;
     [SerializeField]
-    private int lives = 3;
+     int lives = 3;
+     
+     [SerializeField]
+      int score= 0;
 
+      void Start()
+    {
+        transform.position= new Vector3(0,0,0);
+       
+        uiManager_sc = GameObject.Find("Canvas").GetComponent<UiManager_sc>();
+        if (uiManager_sc == null)
+        {
+            Debug.LogError("PlayerController ::Start !Hata- uiManager_sc NULL değerine sahip! ");
+        }
+        audioSource = GetComponent<AudioSource>();
+        if(audioSource == null)
+        {
+            Debug.LogError("PlayerController :: Start ! Hata- audioSource NULL değerine sahip! ");
+        }
+        else
+        {
+            audioSource.clip = laserSoundClip;
+
+        }
+    }
    
 
     
@@ -70,6 +98,10 @@ public class PlayerController : MonoBehaviour
         {
             Instantiate(tripleLaserPrefab, (this.transform.position), Quaternion.identity);
         }
+        //play the laser audio clip
+        audioSource.Play();
+        
+       
     }
 
     public void Damage()
@@ -85,6 +117,19 @@ public class PlayerController : MonoBehaviour
         //koruma kalkanı aktif değilse canı bir azaltır 
 
         lives--;
+        if (lives == 2)
+        {
+            rightEngine.SetActive(true);
+        }
+        else if (lives == 1)
+        {
+            leftEngine.SetActive(true);
+        }
+
+        if(uiManager_sc != null)
+        {
+            uiManager_sc.UpdateLives(lives);
+        }
 
         if (lives == 0)
         {
@@ -104,7 +149,17 @@ public class PlayerController : MonoBehaviour
 
 
         }
+
     }
+    public void AddScore(int points)
+    {
+        score += points;
+        uiManager_sc.UpdateScore(score);
+
+    }
+    
+
+
     public void TripleShotActive()
     {
         isTripleShotActive = true;
@@ -113,7 +168,7 @@ public class PlayerController : MonoBehaviour
 
     public void SpeedBonusActive()
     {
-        isSpeedBonusActive= true;
+       // isSpeedBonusActive= true;
         speed*= speedMultiplier;
         StartCoroutine(SpeedBonusCancelRoutine());
     }
@@ -136,7 +191,7 @@ public class PlayerController : MonoBehaviour
     IEnumerator SpeedBonusCancelRoutine()
     {
         yield return new WaitForSeconds(5.0f);
-        isSpeedBonusActive = false;
+       //isSpeedBonusActive = false;
         speed/= speedMultiplier;
     }
 

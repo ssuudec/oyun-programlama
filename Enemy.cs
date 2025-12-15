@@ -9,12 +9,21 @@ public class Enemy : MonoBehaviour
 
     Animator animator;
 
+    AudioSource audioSource;
+
     void Start()
     {
         playerController = GameObject.Find("Player").GetComponent<PlayerController>();
 
         animator = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
+        if(audioSource == null) 
+        {
+            Debug.LogError("Enemy :: Start ! Hata- audioSource NULL değerine sahip! ");
+        }
     }
+
+    
 
     // Update is called once per frame
     void Update()
@@ -47,6 +56,8 @@ public class Enemy : MonoBehaviour
             animator.SetTrigger("OnEnemyDeath");
             //hızı sıfırla 
             speed = 0;
+            //patlama sesini çal
+            audioSource.Play();
             
             //kendini yok et 
             Destroy(this.gameObject, 2.3f);
@@ -68,6 +79,9 @@ public class Enemy : MonoBehaviour
             animator.SetTrigger("OnEnemyDeath");
             // hızı sıfırla
             speed = 0;
+
+            //patlama sesini çal
+            audioSource.Play();
             // kendini yok et 
             Destroy(this.gameObject, 2.3f);
         }

@@ -33,14 +33,15 @@ public class SpawnManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        StartCoroutine(SpawnEnemyRoutine());
-        StartCoroutine(SpawnBonusRoutine());
+       
     }
 
 
 
     IEnumerator SpawnEnemyRoutine()
     {
+        yield return new WaitForSeconds(3.0f);
+
         while (stopSpawning == false)
         {
             Vector3 position = new Vector3(Random.Range(-9.5f, 9.5f), 7.4f, 0);
@@ -55,20 +56,25 @@ public class SpawnManager : MonoBehaviour
     IEnumerator SpawnBonusRoutine()
     {
         while(stopSpawning == false)
+
         {
-            Vector3 position = new Vector3(Random.Range(-9.18f, 9.18f), 7.7f, 0);
-            
             int WaitTime = Random.Range(5, 10);
-            Debug.Log("Üçlü atış bekleme süresi" + WaitTime);
             yield return new WaitForSeconds((float)WaitTime);
 
-            int randomBonus= Random.Range(0, 3);
-            GameObject TripleShotBonus = Instantiate(bonusPrefabs[randomBonus], position, Quaternion.identity);
-
+            Vector3 position = new Vector3(Random.Range(-9.18f, 9.18f), 7.7f, 0);
             
+            
+            int randomBonus= Random.Range(0, 3);
+            Instantiate(bonusPrefabs[randomBonus], position, Quaternion.identity);
 
- 
-        }
+             }
+    }
+
+    public void StartSpawning()
+    {
+        
+        StartCoroutine(SpawnEnemyRoutine());
+        StartCoroutine(SpawnBonusRoutine());
     }
 
 
@@ -78,8 +84,4 @@ public class SpawnManager : MonoBehaviour
         stopSpawning = true;
     }
     
-
-
-
-
 }
